@@ -105,6 +105,7 @@ class LigandChargeFinder:
             element.OBAtom.SetId(1)
         atom.OBAtom.SetId(3)
         a = atom.OBAtom
+        is_ring = False
         for bond in openbabel.OBAtomBondIter(a):
             if self.molecule.atoms[bond.GetNbrAtomIdx(a) - 1].OBAtom.IsMetal():
                 bond.SetId(2)
