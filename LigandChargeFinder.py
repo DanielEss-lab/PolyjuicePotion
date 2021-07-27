@@ -83,15 +83,19 @@ class LigandChargeFinder:
         if iteration > 6:
             return False
         a = atom.OBAtom
+        is_ring = False
         for bond in openbabel.OBAtomBondIter(a):
             other_end = self.molecule.atoms[bond.GetNbrAtomIdx(a) - 1]
             if other_end.OBAtom.GetId() == 3 and bond.GetId() == 1:
-                return True
-            if bond.GetId() == 1:
                 bond.SetId(2)
-                return self.help_aromatic_ring(other_end, iteration + 1)
+                return True
+            elif bond.GetId() == 1:
+                bond.SetId(2)
+                is_ring = self.help_aromatic_ring(other_end, iteration + 1)
+            if is_ring:
+                break
 
-        return False
+        return is_ring
 
     def find_aromatic_ring(self, atom):
         if atom.atomicnum != 6 and atom.atomicnum != 7:     # The aromatic ring should start with either a nitrogen or a carbon
@@ -109,15 +113,52 @@ class LigandChargeFinder:
         for bond in openbabel.OBAtomBondIter(a):
             if self.molecule.atoms[bond.GetNbrAtomIdx(a) - 1].OBAtom.IsMetal():
                 bond.SetId(2)
-            if bond.GetId() == 1:
+            elif bond.GetId() == 1:
                 bond.SetId(2)
                 is_ring = self.help_aromatic_ring(self.molecule.atoms[bond.GetNbrAtomIdx(a) - 1], 1)
+            if is_ring:
+                return True
 
         return is_ring
 
+    def find_aromatic_nitrogen(self, atom):
+        if atom.atomicnum != 7:
+            return False
+        is_ring = self.find_aromatic_ring(atom)
+        if not is_ring:
+            return False
+
+        return True
+
+    def find_carbon_two_nitrogens(self, atom):
+        if atom.atomicnum != 6:
+            return False
+        a = atom.OBAtom
+        if self.bondcounter(a) != 3:
+            return False
+        nitrogen_count = 0
+        for bond in openbabel.OBAtomBondIter(a):
+            if self.molecule.atoms[bond.GetNbrAtomIdx(a) - 1].atomicnum == 7:
+                nitrogen_count += 1
+
+        if nitrogen_count == 2:
+            nitrogen_1_bonds = 0
+            nitrogen_2_bonds = 0
+            for bond in openbabel.OBAtomBondIter(a):
+                if self.molecule.atoms[bond.GetNbrAtomIdx(a) - 1].atomicnum == 7:
+                    if nitrogen_1_bonds == 0:
+                        nitrogen_1_bonds = self.bondcounter(self.molecule.atoms[bond.GetNbrAtomIdx(a) - 1].OBAtom)
+                    else:
+                        nitrogen_2_bonds = self.bondcounter(self.molecule.atoms[bond.GetNbrAtomIdx(a) - 1].OBAtom)
+            if nitrogen_1_bonds == 3 and nitrogen_2_bonds == 3:
+                return True
+
+        return False
+
     def charge_change(self, atom):
         neutral_ligand = self.cnfinder(atom) or self.cofinder(atom) or self.wateresque_finder(atom) or \
-                         self.ammonia_finder(atom)
+                         self.ammonia_finder(atom) or self.find_aromatic_nitrogen(atom) or \
+                         self.find_carbon_two_nitrogens(atom)
         double_bond = self.oxygen_double_bond(atom) or self.carbon_double_bond(atom)
         triple_bond = False
         if neutral_ligand:
