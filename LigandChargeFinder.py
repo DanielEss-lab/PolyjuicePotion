@@ -1,5 +1,6 @@
 import openbabel
 import pybel
+import TestSwitch
 
 
 class LigandChargeFinder:
@@ -69,7 +70,9 @@ class LigandChargeFinder:
         c = carbon.OBAtom
         bonds = self.bondcounter(c)
         if bonds == 3 and carbon.atomicnum == 6:
-            return True
+            for bond in openbabel.OBAtomBondIter(c):
+                if self.molecule.atoms[bond.GetNbrAtomIdx(c) - 1].OBAtom.IsMetal():
+                    return TestSwitch.switch(self.molecule.atoms[bond.GetNbrAtomIdx(c) - 1].atomicnum, carbon.atomicnum, bond.GetLength())
         if bonds == 2 and carbon.atomicnum == 6:
             if self.cofinder(carbon) or self.cnfinder(carbon):
                 return False
