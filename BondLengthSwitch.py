@@ -2,7 +2,7 @@ def switch(metal, bonded, distance=0):
     if 30 >= metal >= 21 and bonded == 8:
         return distance <= 1.7
     elif 48 >= metal >= 39 and bonded == 8:
-        return distance <= 1.91   # TODO Fix this number - check Pd
+        return distance <= 1.91
     elif 80 >= metal >= 57 and bonded == 8:
         return distance <= 1.96
 

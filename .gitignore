@@ -1,2 +1,11 @@
 *.xyz
 *.zip
+pain.py
+filter.py
+BondLength.py
+FindMetalBonds.py
+FindMultiBonds.py
+FindWeirdRingThings.py
+TestAddH.py
+.idea
+_pycache_

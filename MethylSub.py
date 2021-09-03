@@ -30,34 +30,35 @@ class MethylSub:
                         charge_finder = LigandChargeFinder.LigandChargeFinder(self.mol)
                         new_charge = charge_finder.charge_change(ligand_atom)
 
-                        # TODO Delete this once the code is proven to work as expected
-                        if new_charge == -1:
-                            if not os.path.exists('Charges'):
-                                os.makedirs('Charges')
-                            if not os.path.exists('Charges/MinusOne'):
-                                os.makedirs('Charges/MinusOne')
-                            self.mol.write("xyz", f"Charges/MinusOne/{self.type}{self.num_atom}-{self.bond_iter}-Before.xyz", True)
-                        elif new_charge == 1:
-                            if not os.path.exists('Charges'):
-                                os.makedirs('Charges')
-                            if not os.path.exists('Charges/PlusOne'):
-                                os.makedirs('Charges/PlusOne')
-                            self.mol.write("xyz", f"Charges/PlusOne/{self.type}{self.num_atom}-{self.bond_iter}-Before.xyz",
-                                           True)
-                        elif new_charge == 0:
-                            if not os.path.exists('Charges'):
-                                os.makedirs('Charges')
-                            if not os.path.exists('Charges/Zero'):
-                                os.makedirs('Charges/Zero')
-                            self.mol.write("xyz", f"Charges/Zero/{self.type}{self.num_atom}-{self.bond_iter}-Before.xyz",
-                                           True)
-                        else:
-                            if not os.path.exists('Charges'):
-                                os.makedirs('Charges')
-                            if not os.path.exists('Charges/Other'):
-                                os.makedirs('Charges/Other')
-                            self.mol.write("xyz", f"Charges/Other/{self.type}{self.num_atom}-{self.bond_iter}-Before.xyz",
-                                           True)
+                        # This chunk of code sorts the files into folders based on what their charges are - kept here for future
+                        # testing needs
+                        # if new_charge == -1:
+                        #     if not os.path.exists('Charges'):
+                        #         os.makedirs('Charges')
+                        #     if not os.path.exists('Charges/MinusOne'):
+                        #         os.makedirs('Charges/MinusOne')
+                        #     self.mol.write("xyz", f"Charges/MinusOne/{self.type}{self.num_atom}-{self.bond_iter}-Before.xyz", True)
+                        # elif new_charge == 1:
+                        #     if not os.path.exists('Charges'):
+                        #         os.makedirs('Charges')
+                        #     if not os.path.exists('Charges/PlusOne'):
+                        #         os.makedirs('Charges/PlusOne')
+                        #     self.mol.write("xyz", f"Charges/PlusOne/{self.type}{self.num_atom}-{self.bond_iter}-Before.xyz",
+                        #                    True)
+                        # elif new_charge == 0:
+                        #     if not os.path.exists('Charges'):
+                        #         os.makedirs('Charges')
+                        #     if not os.path.exists('Charges/Zero'):
+                        #         os.makedirs('Charges/Zero')
+                        #     self.mol.write("xyz", f"Charges/Zero/{self.type}{self.num_atom}-{self.bond_iter}-Before.xyz",
+                        #                    True)
+                        # else:
+                        #     if not os.path.exists('Charges'):
+                        #         os.makedirs('Charges')
+                        #     if not os.path.exists('Charges/Other'):
+                        #         os.makedirs('Charges/Other')
+                        #     self.mol.write("xyz", f"Charges/Other/{self.type}{self.num_atom}-{self.bond_iter}-Before.xyz",
+                        #                    True)
                         return new_charge
 
                     counter += 1
@@ -113,34 +114,35 @@ class MethylSub:
                         self.metal_ind = bond.GetNbrAtomIdx(carbon)
                     counter += 1
 
-        # self.mol.addh()       # We don't trust Pybel enough to use this
-        if self.new_charge == -1:
-            if not os.path.exists('Charges'):
-                os.makedirs('Charges')
-            if not os.path.exists('Charges/MinusOne'):
-                os.makedirs('Charges/MinusOne')
-            self.mol.write("xyz", f"Charges/MinusOne/{self.type}{self.num_atom}-{self.bond_iter}-After.xyz", True)
-        elif self.new_charge == 1:
-            if not os.path.exists('Charges'):
-                os.makedirs('Charges')
-            if not os.path.exists('Charges/PlusOne'):
-                os.makedirs('Charges/PlusOne')
-            self.mol.write("xyz", f"Charges/PlusOne/{self.type}{self.num_atom}-{self.bond_iter}-After.xyz",
-                           True)
-        elif self.new_charge == 0:
-            if not os.path.exists('Charges'):
-                os.makedirs('Charges')
-            if not os.path.exists('Charges/Zero'):
-                os.makedirs('Charges/Zero')
-            self.mol.write("xyz", f"Charges/Zero/{self.type}{self.num_atom}-{self.bond_iter}-After.xyz",
-                           True)
-        else:
-            if not os.path.exists('Charges'):
-                os.makedirs('Charges')
-            if not os.path.exists('Charges/Other'):
-                os.makedirs('Charges/Other')
-            self.mol.write("xyz", f"Charges/Other/{self.type}{self.num_atom}-{self.bond_iter}-After.xyz",
-                           True)
+        # This chunk of code sorts the files into folders based on what their charges are - kept here for future
+        # testing needs
+        # if self.new_charge == -1:
+        #     if not os.path.exists('Charges'):
+        #         os.makedirs('Charges')
+        #     if not os.path.exists('Charges/MinusOne'):
+        #         os.makedirs('Charges/MinusOne')
+        #     self.mol.write("xyz", f"Charges/MinusOne/{self.type}{self.num_atom}-{self.bond_iter}-After.xyz", True)
+        # elif self.new_charge == 1:
+        #     if not os.path.exists('Charges'):
+        #         os.makedirs('Charges')
+        #     if not os.path.exists('Charges/PlusOne'):
+        #         os.makedirs('Charges/PlusOne')
+        #     self.mol.write("xyz", f"Charges/PlusOne/{self.type}{self.num_atom}-{self.bond_iter}-After.xyz",
+        #                    True)
+        # elif self.new_charge == 0:
+        #     if not os.path.exists('Charges'):
+        #         os.makedirs('Charges')
+        #     if not os.path.exists('Charges/Zero'):
+        #         os.makedirs('Charges/Zero')
+        #     self.mol.write("xyz", f"Charges/Zero/{self.type}{self.num_atom}-{self.bond_iter}-After.xyz",
+        #                    True)
+        # else:
+        #     if not os.path.exists('Charges'):
+        #         os.makedirs('Charges')
+        #     if not os.path.exists('Charges/Other'):
+        #         os.makedirs('Charges/Other')
+        #     self.mol.write("xyz", f"Charges/Other/{self.type}{self.num_atom}-{self.bond_iter}-After.xyz",
+        #                    True)
 
         if not os.path.exists('DeletedMono'):
             os.makedirs('DeletedMono')
