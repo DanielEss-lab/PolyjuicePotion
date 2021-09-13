@@ -6,7 +6,6 @@ def switch(metal, bonded, distance=0):
     elif 80 >= metal >= 57 and bonded == 8:
         return distance <= 1.96
 
-
     elif 27 >= metal >= 21 and bonded == 7:
         return distance <= 1.675
     elif 30 >= metal >= 28 and bonded == 7:
@@ -19,7 +18,6 @@ def switch(metal, bonded, distance=0):
         return distance <= 1.87
     elif 80 >= metal >= 77 and bonded == 7:
         return distance <= 1.78
-
 
     elif 27 >= metal >= 21 and bonded == 6:
         return distance <= 1.84

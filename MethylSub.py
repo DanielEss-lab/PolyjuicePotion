@@ -18,9 +18,9 @@ class MethylSub:
             if atom.OBAtom.IsMetal():
                 self.type = atom.type
         self.set_bond_id()
-        self.new_charge = self.charge_modifier()
+        self.new_charge = self.modify_charge()
 
-    def charge_modifier(self):
+    def modify_charge(self):
         for atom in self.mol:
             if atom.OBAtom.IsMetal():
                 counter = 0
@@ -28,7 +28,7 @@ class MethylSub:
                     if self.bond_iter == counter:
                         ligand_atom = self.mol.atoms[bond.GetNbrAtomIdx(atom.OBAtom) - 1]
                         charge_finder = LigandChargeFinder.LigandChargeFinder(self.mol)
-                        new_charge = charge_finder.charge_change(ligand_atom)
+                        new_charge = charge_finder.change_charge(ligand_atom)
 
                         # This chunk of code sorts the files into folders based on what their charges are - kept here for future
                         # testing needs

@@ -3,28 +3,29 @@ import time
 import openbabel
 import pybel
 import glob
-import re as reeeeeeeeee
+import re
 import MethylSub
+
+
+def find_nitrogen_multi_bond(atom):
+    num_bonds = 0
+    for _ in openbabel.OBAtomBondIter(atom.OBAtom):
+        num_bonds += 1
+
+    if num_bonds < 3:
+        return True
+    return False
 
 
 class MonoFinder:
     def __init__(self, mol):
         self.multiBond = False
         self.metalHit = 0
-        self.numMetalBonds = int(reeeeeeeeee.findall("MND = (\d+)", str(mol))[0])
+        self.numMetalBonds = int(re.findall("MND = (\d+)", str(mol))[0])
         self.mol = mol
 
         self.find_nearest_atoms()
         self.set_bond_id()
-
-    def nitrogen_multi_bond(self, atom):
-        num_bonds = 0
-        for _ in openbabel.OBAtomBondIter(atom.OBAtom):
-            num_bonds += 1
-
-        if num_bonds < 3:
-            return True
-        return False
 
     def find_ligands(self, atom):
         a = atom.OBAtom
@@ -47,7 +48,7 @@ class MonoFinder:
                 bond.SetId(1)
                 ligand_start = self.mol.atoms[bond.GetNbrAtomIdx(m) - 1]
                 if ligand_start.atomicnum == 7:
-                    if self.nitrogen_multi_bond(ligand_start):
+                    if find_nitrogen_multi_bond(ligand_start):
                         self.metalHit += 1  # If the start of the ligand is a nitrogen with a double or triple bond
                         # the metal, then add one to the metal count to ignore this ligand
                 self.find_ligands(ligand_start)
@@ -62,34 +63,34 @@ class MonoFinder:
             bond_iter += 1
 
     def find_nearest_atoms(self):
-        metalBondedList = []
+        metal_bonded_list = []
         for atom in self.mol:
             if atom.OBAtom.IsMetal():
                 for otherAtom in self.mol:
                     if not otherAtom.OBAtom.IsMetal():
-                        metalBondedList.append((otherAtom, atom.OBAtom.GetDistance(otherAtom.OBAtom)))
+                        metal_bonded_list.append((otherAtom, atom.OBAtom.GetDistance(otherAtom.OBAtom)))
 
-        newMetalBondedList = sorted(metalBondedList, key=lambda x: x[1])
+        new_metal_bonded_list = sorted(metal_bonded_list, key=lambda x: x[1])
 
         for atom in self.mol:
             if atom.OBAtom.IsMetal():
                 for j in range(self.numMetalBonds):
-                    if self.mol.OBMol.GetBond(atom.OBAtom, newMetalBondedList[j][0].OBAtom) is None:
-                        if newMetalBondedList[j][0].atomicnum == 1:
+                    if self.mol.OBMol.GetBond(atom.OBAtom, new_metal_bonded_list[j][0].OBAtom) is None:
+                        if new_metal_bonded_list[j][0].atomicnum == 1:
                             i = 0
-                            for _ in openbabel.OBAtomBondIter(newMetalBondedList[j][0].OBAtom):
+                            for _ in openbabel.OBAtomBondIter(new_metal_bonded_list[j][0].OBAtom):
                                 i += 1
                             if i > 0:
                                 break
                             else:
                                 bond = openbabel.OBBond()
                                 bond.SetBegin(atom.OBAtom)
-                                bond.SetEnd(newMetalBondedList[j][0].OBAtom)
+                                bond.SetEnd(new_metal_bonded_list[j][0].OBAtom)
                                 self.mol.OBMol.AddBond(bond)
                         else:
                             bond = openbabel.OBBond()
                             bond.SetBegin(atom.OBAtom)
-                            bond.SetEnd(newMetalBondedList[j][0].OBAtom)
+                            bond.SetEnd(new_metal_bonded_list[j][0].OBAtom)
                             self.mol.OBMol.AddBond(bond)
 
     def set_bond_id(self):
@@ -112,4 +113,4 @@ end_time = time.time()
 elapsed_time = end_time - start_time
 minutes = elapsed_time // 60
 seconds = elapsed_time % 60
-print(f"Ran through {mol_num} molecules in {minutes} minutes and {seconds} seconds.")
+print(f"Ran through {mol_num} molecules in {minutes:.0f} minutes and {seconds:.2f} seconds.")

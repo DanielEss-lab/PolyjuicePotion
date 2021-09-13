@@ -9,3 +9,5 @@ FindWeirdRingThings.py
 TestAddH.py
 .idea
 _pycache_
+__pycache__/
+*.pyc
