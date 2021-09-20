@@ -19,9 +19,9 @@ def find_nitrogen_multi_bond(atom):
 
 class MonoFinder:
     def __init__(self, mol):
-        self.multiBond = False
-        self.metalHit = 0
-        self.numMetalBonds = int(re.findall("MND = (\d+)", str(mol))[0])
+        self.multi_bond = False
+        self.metal_hit = 0
+        self.num_metal_bonds = int(re.findall("MND = (\d+)", str(mol))[0])
         self.mol = mol
 
         self.find_nearest_atoms()
@@ -35,7 +35,7 @@ class MonoFinder:
                 if self.mol.atoms[bond.GetNbrAtomIdx(a) - 1].atomicnum == 1:
                     continue
                 elif self.mol.atoms[bond.GetNbrAtomIdx(a) - 1].OBAtom.IsMetal():
-                    self.metalHit += 1
+                    self.metal_hit += 1
                     continue
                 else:
                     self.find_ligands(self.mol.atoms[bond.GetNbrAtomIdx(a) - 1])
@@ -49,16 +49,16 @@ class MonoFinder:
                 ligand_start = self.mol.atoms[bond.GetNbrAtomIdx(m) - 1]
                 if ligand_start.atomicnum == 7:
                     if find_nitrogen_multi_bond(ligand_start):
-                        self.metalHit += 1  # If the start of the ligand is a nitrogen with a double or triple bond
+                        self.metal_hit += 1  # If the start of the ligand is a nitrogen with a double or triple bond
                         # the metal, then add one to the metal count to ignore this ligand
                 self.find_ligands(ligand_start)
-                if self.metalHit == 0:
+                if self.metal_hit == 0:
                     copy_molecule = pybel.Molecule(openbabel.OBMol(self.mol.OBMol))
                     sub = MethylSub.MethylSub(copy_molecule, bond_iter, mol_num)
                     sub.delete_ligand()
                     return  # This causes the first iteration to be the only iteration.  If we want to do all the monodentates, then remove this.
                 else:
-                    self.metalHit = 0
+                    self.metal_hit = 0
 
             bond_iter += 1
 
@@ -74,7 +74,7 @@ class MonoFinder:
 
         for atom in self.mol:
             if atom.OBAtom.IsMetal():
-                for j in range(self.numMetalBonds):
+                for j in range(self.num_metal_bonds):
                     if self.mol.OBMol.GetBond(atom.OBAtom, new_metal_bonded_list[j][0].OBAtom) is None:
                         if new_metal_bonded_list[j][0].atomicnum == 1:
                             i = 0
@@ -106,9 +106,9 @@ for file in glob.glob("*.xyz"):
     for molecule in pybel.readfile("xyz", file):
         mol_num += 1
         finder = MonoFinder(molecule)
-        for atomicBoi in molecule:
-            if atomicBoi.OBAtom.IsMetal():
-                finder.start(atomicBoi)
+        for metal in molecule:
+            if metal.OBAtom.IsMetal():
+                finder.start(metal)
 end_time = time.time()
 elapsed_time = end_time - start_time
 minutes = elapsed_time // 60

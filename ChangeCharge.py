@@ -18,8 +18,3 @@ class ChargeChanger:
 
         with open(self.filename, 'w') as file:
             file.write(filedata)
-
-
-if __name__ == "__main__":
-    changer = ChargeChanger("W3095.xyz")
-    changer.change(0)
