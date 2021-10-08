@@ -1,3 +1,7 @@
+"""
+@author Zack Meyer
+"""
+
 import openbabel
 import pybel
 import BondLengthSwitch

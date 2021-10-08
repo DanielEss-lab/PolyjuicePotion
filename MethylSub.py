@@ -1,3 +1,7 @@
+"""
+@author Zack Meyer
+"""
+
 import os
 import pybel
 import openbabel

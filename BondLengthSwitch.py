@@ -1,3 +1,7 @@
+"""
+@author Zack Meyer
+"""
+
 def switch(metal, bonded, distance=0):
     if 30 >= metal >= 21 and bonded == 8:
         return distance <= 1.7

@@ -1,3 +1,7 @@
+"""
+@author Zack Meyer
+"""
+
 import time
 
 import openbabel

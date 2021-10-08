@@ -33,7 +33,8 @@ class AddH:
         orig = open(self.filename, 'r', newline='')
         if not os.path.exists('HydrogensAdded'):
             os.makedirs('HydrogensAdded')
-        new = open(f'HydrogensAdded/H-{self.filename[12:]}', 'w')
+        new = open(f'HydrogensAdded/{self.filename[12:]}', 'w')
+        new = open(f'HydrogensAdded/{self.filename[12:]}', 'w')
         reader = csv.reader(orig, delimiter=' ')
         for row in reader:
             row = [i for i in row if i]
