@@ -23,6 +23,7 @@ class MethylSub:
                 self.type = atom.type
         self.set_bond_id()
         self.new_charge = self.modify_charge()
+        self.set_bond_id()
 
     def modify_charge(self):
         for atom in self.mol:
