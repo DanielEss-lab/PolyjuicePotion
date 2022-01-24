@@ -55,7 +55,14 @@ class MonoFinder:
                     if find_nitrogen_multi_bond(ligand_start):
                         self.metal_hit += 1  # If the start of the ligand is a nitrogen with a double or triple bond
                         # the metal, then add one to the metal count to ignore this ligand
-                self.find_ligands(ligand_start)
+
+                if not do_ligand_filter:
+                    self.find_ligands(ligand_start)
+                elif do_ligand_filter and ligand_start.atomicnum == ligand_filter:
+                    self.find_ligands(ligand_start)
+                else:
+                    bond_iter += 1
+                    continue
                 if self.metal_hit == 0:
                     copy_molecule = pybel.Molecule(openbabel.OBMol(self.mol.OBMol))
                     sub = MethylSub.MethylSub(copy_molecule, bond_iter, mol_num)
@@ -104,6 +111,16 @@ class MonoFinder:
                 bond.SetId(0)
 
 
+filter_input = input("Do you want to only replace ligands for a certain metal? ").lower()
+do_metal_filter = filter_input == 'y' or filter_input == 'yes'
+if do_metal_filter:
+    metal_filter = int(input("Please enter the atomic number of the metal you want: "))
+
+filter_input = input("Do you want to only replace ligands with a certain starting atom? ").lower()
+do_ligand_filter = filter_input == 'y' or filter_input == 'yes'
+if do_ligand_filter:
+    ligand_filter = int(input("Please enter the atomic number of the ligand's starting atom: "))
+
 start_time = time.time()
 mol_num = 0
 for file in glob.glob("*.xyz"):
@@ -111,8 +128,13 @@ for file in glob.glob("*.xyz"):
         mol_num += 1
         finder = MonoFinder(molecule)
         for metal in molecule:
-            if metal.OBAtom.IsMetal():
+            if metal.OBAtom.IsMetal() and not do_metal_filter:
                 finder.start(metal)
+            elif metal.OBAtom.IsMetal() and metal.atomicnum == metal_filter:
+                finder.start(metal)
+            else:
+                break
+
 end_time = time.time()
 elapsed_time = end_time - start_time
 minutes = elapsed_time // 60

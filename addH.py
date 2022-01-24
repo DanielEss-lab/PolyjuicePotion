@@ -7,6 +7,7 @@ import numpy as np
 import os
 
 # Filename = sys.argv[1]  # Get the name of the structure to edit from the commandline
+DIRECTORY = 'HydrogensAdded'
 
 
 class AddH:
@@ -31,10 +32,10 @@ class AddH:
 
     def writexyz(self, coord1, coord2, coord3):
         orig = open(self.filename, 'r', newline='')
-        if not os.path.exists('HydrogensAdded'):
-            os.makedirs('HydrogensAdded')
-        new = open(f'HydrogensAdded/{self.filename[12:]}', 'w')
-        new = open(f'HydrogensAdded/{self.filename[12:]}', 'w')
+        if not os.path.exists(DIRECTORY):
+            os.makedirs(DIRECTORY)
+        new = open(f'{DIRECTORY}/{self.filename[12:]}', 'w')
+        new = open(f'{DIRECTORY}/{self.filename[12:]}', 'w')
         reader = csv.reader(orig, delimiter=' ')
         for row in reader:
             row = [i for i in row if i]
