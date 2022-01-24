@@ -113,11 +113,13 @@ class MonoFinder:
 
 filter_input = input("Do you want to only replace ligands for a certain metal? ").lower()
 do_metal_filter = filter_input == 'y' or filter_input == 'yes'
+metal_filter = 0
 if do_metal_filter:
     metal_filter = int(input("Please enter the atomic number of the metal you want: "))
 
 filter_input = input("Do you want to only replace ligands with a certain starting atom? ").lower()
 do_ligand_filter = filter_input == 'y' or filter_input == 'yes'
+ligand_filter = 0
 if do_ligand_filter:
     ligand_filter = int(input("Please enter the atomic number of the ligand's starting atom: "))
 
