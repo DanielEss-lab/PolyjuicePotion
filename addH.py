@@ -11,10 +11,11 @@ DIRECTORY = 'HydrogensAdded'
 
 
 class AddH:
-    def __init__(self, filename, metal_ind, carbon_ind):
+    def __init__(self, filename, metal_ind, carbon_ind, metal=""):
         self.filename = filename
         self.metal_ind = metal_ind
         self.carbon_ind = carbon_ind
+        self.metal = metal
 
     def readxyz(self):
         atoms = np.empty(0)  # Initialize array for atom elements
@@ -34,8 +35,15 @@ class AddH:
         orig = open(self.filename, 'r', newline='')
         if not os.path.exists(DIRECTORY):
             os.makedirs(DIRECTORY)
-        new = open(f'{DIRECTORY}/{self.filename[12:]}', 'w')
-        new = open(f'{DIRECTORY}/{self.filename[12:]}', 'w')
+        if self.metal != "":
+            if not os.path.exists(f"{DIRECTORY}/{self.metal}"):
+                os.makedirs(f"{DIRECTORY}/{self.metal}")
+            new = open(f'{DIRECTORY}/{self.metal}/{self.filename[12:]}', 'w')
+            new = open(f'{DIRECTORY}/{self.metal}/{self.filename[12:]}', 'w')
+        else:
+            new = open(f'{DIRECTORY}/{self.filename[12:]}', 'w')
+            new = open(f'{DIRECTORY}/{self.filename[12:]}', 'w')
+
         reader = csv.reader(orig, delimiter=' ')
         for row in reader:
             row = [i for i in row if i]

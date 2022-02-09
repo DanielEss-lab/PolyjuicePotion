@@ -155,5 +155,5 @@ class MethylSub:
         charge_changer = ChangeCharge.ChargeChanger(f"DeletedMono/{self.type}{self.num_atom}-{self.bond_iter}.xyz")
         charge_changer.change(self.new_charge)
 
-        hydrogen_adder = addH.AddH(f"DeletedMono/{self.type}{self.num_atom}-{self.bond_iter}.xyz", self.metal_ind, self.new_carbon_ind)
+        hydrogen_adder = addH.AddH(f"DeletedMono/{self.type}{self.num_atom}-{self.bond_iter}.xyz", self.metal_ind, self.new_carbon_ind, self.type)
         hydrogen_adder.start()
