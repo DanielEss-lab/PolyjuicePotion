@@ -21,11 +21,16 @@ def find_nitrogen_multi_bond(atom):
     return False
 
 
+def find_num_bonds_to_metal(mol):
+    mnd_list = re.findall("MND = (\d+)", str(mol));
+    return mnd_list[0] if mnd_list != [] else "0"
+
+
 class MonoFinder:
     def __init__(self, mol):
         self.multi_bond = False
         self.metal_hit = 0
-        self.num_metal_bonds = int(re.findall("MND = (\d+)", str(mol))[0])
+        self.num_metal_bonds = int(find_num_bonds_to_metal(mol))
         self.mol = mol
 
         self.find_nearest_atoms()
