@@ -139,8 +139,8 @@ for file in glob.glob("*.xyz"):
                 finder.start(metal)
             elif metal.OBAtom.IsMetal() and metal.atomicnum == metal_filter:
                 finder.start(metal)
-            else:
-                break
+            # else:
+            #     break
 
 end_time = time.time()
 elapsed_time = end_time - start_time
