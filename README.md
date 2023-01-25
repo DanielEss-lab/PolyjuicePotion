@@ -1,13 +1,8 @@
 <h3>Polyjuice</h3>\
-Created by Zack Meyer, Nathan Morgan, and Billy Hirschi
+Created by Zack Meyer, Nathan Morgan, Brendan Jensen, Billy Hirschi, and Daniel H. Ess
 
-<p>Usage: Identifies monodentate ligands in an xyz file containing an organometallic
-molecule with a single metal core and replaces those ligands with a methyl group.
-This program can be used to replace a single monodentate ligand or all monodentate
-ligands in the compound, however changing it does require a small edit to the source code
-The source code also contains code for saving the compounds during various stages of the
-replacement/identification process, all labelled with comments describing what each section
-of code does.</p>
+<p>Usage: Identifies ligands in an xyz file containing an organometallic
+molecule.</p>
 
 <p>Requirements: requires Python 3.6, openbabel 3.1.1, all .py files in the same directory,
 the xyz files with the organometallic compound(s) in the same directory as the .py files<br>
