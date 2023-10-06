@@ -2,8 +2,8 @@
 @author Zack Meyer
 """
 
-import openbabel
-import pybel
+from openbabel import openbabel
+from openbabel import pybel
 import BondLengthSwitch
 
 
