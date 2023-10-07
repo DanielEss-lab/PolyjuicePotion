@@ -4,8 +4,8 @@
 
 import time
 
-import openbabel
-import pybel
+from openbabel import openbabel
+from openbabel import pybel
 import glob
 import re
 import MethylSub

@@ -3,8 +3,8 @@
 """
 
 import os
-import pybel
-import openbabel
+from openbabel import pybel
+from openbabel import openbabel
 import addH
 import LigandChargeFinder
 import ChangeCharge
